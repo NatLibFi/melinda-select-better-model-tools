@@ -1,7 +1,9 @@
 data <- read.table('table.txt')
-X11()
+
+png(file="training-plot.png", bg="white")
+
+
 plot(data, type="n")
 lines(data)
 
-message("Press Return To Continue")
-invisible(readLines("stdin", n=1))
+dev.off()

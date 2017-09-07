@@ -34,7 +34,7 @@ function transformSet(recordSet) {
     const vector1 = SelectBetter.generateFeatureVector(features1);
     const vector2 = SelectBetter.generateFeatureVector(features2);
 
-    SelectBetter.normalizeFeatureVectors(vector1, vector2, SelectBetter.NormalizerPreset.Default);
+    SelectBetter.normalizeFeatureVectors(vector1, vector2, SelectBetter.ExtractorPreset.Default);
 
     const label = Math.random() > 0.5 ? 0 : 1;
     const output = [label];
