@@ -46,8 +46,8 @@ async function run() {
   console.log('wrote /tmp/select-better-guessLabels.txt');
 
   const correct = guesses.filter(item => item.correct);
-
-  console.log(`Correct: ${correct.length}/${guesses.length}`);
+  const correctPercentage = Math.round((correct.length / guesses.length * 100) * 100) / 100;
+  console.log(`Correct: ${correct.length}/${guesses.length} (${correctPercentage}%)`);
 
   fs.writeFileSync('/tmp/select-better-guesses.json', JSON.stringify(guesses), 'utf8');
   console.log('wrote /tmp/select-better-guesses.json');

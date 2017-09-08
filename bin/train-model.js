@@ -26,8 +26,8 @@ async function run() {
   const trainer = new synaptic.Trainer(model);
   const opts = {
     rate: [0.005, 0.0025, 0.001],
-    iterations: 20000,
-    error: .0135,
+    iterations: 12000,
+    error: .0035,
     shuffle: true,
     log: 10,
     cost: synaptic.Trainer.cost.MSE
