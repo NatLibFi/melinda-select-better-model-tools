@@ -25,7 +25,7 @@ async function run() {
 
 function transformSet(recordSet) {
   
-  return recordSet.map(item => {
+  return _.flatMap(recordSet, item => {
     const { preferred, other } = item;
 
     const features1 = SelectBetter.generateFeatures(preferred, SelectBetter.ExtractorPreset.Default);
@@ -36,16 +36,34 @@ function transformSet(recordSet) {
 
     SelectBetter.normalizeFeatureVectors(vector1, vector2, SelectBetter.ExtractorPreset.Default);
 
+    const firstIsBetter = {
+      input: _.concat(vector1, vector2),
+      output: [0],
+      preferred: preferred,
+      other: other
+    };
+
+    
+    const secondIsBetter = {
+      input: _.concat(vector2, vector1),
+      output: [1],
+      preferred: other,
+      other: preferred
+    };
+    
+    return [firstIsBetter, secondIsBetter];
+
+    /*
     const label = Math.random() > 0.5 ? 0 : 1;
     const output = [label];
     // 0 means first is better, 1 means second is better
     const input = label === 0 ? _.concat(vector1, vector2) : _.concat(vector2, vector1);
 
-    // Catenate vectors to single input vector
     return { 
       input, output, 
       preferred: label === 0 ? preferred : other,
       other: label === 0 ? other : preferred
     };
+    */
   });
 }
