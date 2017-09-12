@@ -32,7 +32,7 @@ function readableMeta(item) {
 
   const humanLabel = item.label;
   const mlpLabel = item.synapticLabel;
-
+  const probability = item.synapticProbability;
   // NOTE that this generates the features on the fly, so if the implementation 
   // has changed the features may not be the ones used for training the network
   const features1 = SelectBetter.generateFeatures(item.preferred, SelectBetter.ExtractorPreset.Default);
@@ -43,6 +43,27 @@ function readableMeta(item) {
 
   SelectBetter.normalizeFeatureVectors(vector1, vector2, SelectBetter.ExtractorPreset.Default);
   
+  const t = createTable(features1, features2, vector1, vector2);
+
+  const differents = _.unzip(_.zip(features1, features2, vector1, vector2).filter(item => item[2] !== item[3]));
+  
+  const t_diffs = createTable(...differents);
+
+
+  return `
+  ----
+  features: \n\n${t.printTransposed()}
+
+  pair: ${id1}-${id2}
+  humanLabel: ${humanLabel}
+  computerLabel: ${mlpLabel}
+  numeric: ${probability}
+  different: \n\n${t_diffs.printTransposed()}
+  `;
+}
+
+function createTable(features1, features2, vector1, vector2) {
+
   var t = new Table();
 
   features1.forEach(function(feature) {
@@ -50,7 +71,6 @@ function readableMeta(item) {
   });
   t.newRow();
   features2.forEach(function(feature) {
-    
     t.cell(feature.name, getFeatureValueString(feature));
   });
   t.newRow();
@@ -63,13 +83,9 @@ function readableMeta(item) {
   });
   t.newRow();
 
-  return `
-  pair: ${id1}-${id2}
-  humanLabel: ${humanLabel}
-  computerLabel: ${mlpLabel}
-  features: \n\n${t.printTransposed()}
-  `;
+  return t;
 }
+
 function getFeatureValueString(feature) {
   if (feature.name === 'reprintInfo') {
     const year = _.get(feature.value, 'year');
