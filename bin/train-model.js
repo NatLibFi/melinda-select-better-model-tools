@@ -14,20 +14,29 @@ async function run() {
 
   const trainingSet = JSON.parse(recordSetData);
 
-
+  
   const INPUTS = trainingSet[0].input.length;
   const OUTPUTS = 1;
   const LAYER_1 = Math.round(Math.sqrt((OUTPUTS+2)*INPUTS)) + Math.round(2 * Math.sqrt(INPUTS/(OUTPUTS+2)));
   const LAYER_1_2 = Math.round(Math.sqrt((OUTPUTS+2)*INPUTS)) + Math.round(2 * Math.sqrt(INPUTS/(OUTPUTS+2)));
   const LAYER_2 = OUTPUTS * Math.round(Math.sqrt(INPUTS/(OUTPUTS+2)));
   
-  const model = new synaptic.Architect.Perceptron(INPUTS, LAYER_1, 2*LAYER_1_2, LAYER_2, OUTPUTS);
+  const architecture = [INPUTS, LAYER_1, OUTPUTS];
+
+  const model = new synaptic.Architect.Perceptron(INPUTS, LAYER_1, OUTPUTS);
+  
+  model.layers.hidden[0].list.forEach(neuron => {
+    neuron.squash = synaptic.Neuron.squash.TANH;
+  });
+
+  console.log('Architecture', ...architecture);
+  console.log('trainingset size', trainingSet.length);
   
   const trainer = new synaptic.Trainer(model);
   const opts = {
-    rate: [0.005, 0.0025, 0.001],
-    iterations: 12000,
-    error: .0035,
+    rate: [0.005, 0.0025, 0.001, 0.0005],
+    iterations: 9000,
+    error: .001,
     shuffle: true,
     log: 10,
     cost: synaptic.Trainer.cost.MSE
