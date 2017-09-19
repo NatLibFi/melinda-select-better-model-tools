@@ -12,7 +12,6 @@ const incorrectItems = items.filter(item => {
   return item.label !== item.synapticLabel;
 });
 
-
 incorrectItems.forEach((item, i) => {
 
   const preferred = MarcRecord.clone(item.preferred);
@@ -46,9 +45,12 @@ function readableMeta(item) {
   const t = createTable(features1, features2, vector1, vector2);
 
   const differents = _.unzip(_.zip(features1, features2, vector1, vector2).filter(item => item[2] !== item[3]));
-  
-  const t_diffs = createTable(...differents);
-
+  let t_diffs;
+  try {
+    t_diffs = createTable(...differents);
+  } catch(e) {
+    t_diffs = new Table();
+  }
 
   return `
   ----

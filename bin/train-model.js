@@ -46,8 +46,8 @@ async function run() {
   console.log(result);
 
   const exported = model.toJSON();
-  fs.writeFileSync('/tmp/select-better-percepton.json', JSON.stringify(exported), 'utf8');
-  console.log('wrote /tmp/select-better-percepton.json');
+  fs.writeFileSync('/tmp/select-better-perceptron.json', JSON.stringify(exported), 'utf8');
+  console.log('wrote /tmp/select-better-perceptron.json');
 
 }
 

@@ -6,8 +6,8 @@ const synaptic = require('synaptic');
 const utils = require('./utils');
 const Network = synaptic.Network;
 
-const exported = JSON.parse(fs.readFileSync('/tmp/select-better-percepton.json', 'utf8'));
-console.log('loaded /tmp/select-better-percepton.json');
+const exported = JSON.parse(fs.readFileSync('/tmp/select-better-perceptron.json', 'utf8'));
+console.log('loaded /tmp/select-better-perceptron.json');
 var importedNetwork = Network.fromJSON(exported);
 
 run().catch(error => console.error(error));
