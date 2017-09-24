@@ -8,11 +8,16 @@ const RecordUtils = require('melinda-deduplication-common/utils/record-utils');
 
 const SelectBetter = require('melinda-deduplication-common/select-better');
 
+const startFrom = process.argv[2] || 0;
+
 const incorrectItems = items.filter(item => {
   return item.label !== item.synapticLabel;
 });
 
 incorrectItems.forEach((item, i) => {
+  if ((i+1) < startFrom) {
+    return;
+  }
 
   const preferred = MarcRecord.clone(item.preferred);
   const other = MarcRecord.clone(item.other);
